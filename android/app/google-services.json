@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "758868551635",
+    "firebase_url": "https://cropwatch-53f59-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "cropwatch-53f59",
+    "storage_bucket": "cropwatch-53f59.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:758868551635:android:53b04deb9b80f200e33126",
+        "android_client_info": {
+          "package_name": "com.example.untitled"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYslaG06agR-10Bk6ey_h1LZZzIqMUT1o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
