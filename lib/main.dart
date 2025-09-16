@@ -1,7 +1,6 @@
 import 'package:untitled/pages/first_page.dart';
 import 'package:untitled/pages/second_page.dart';
 import 'package:firebase_core/firebase_core.dart';
-
 import 'package:flutter/material.dart';
 
 void main() async {
@@ -26,3 +25,4 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+

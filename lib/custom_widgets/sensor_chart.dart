@@ -1,8 +1,8 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'dart:async';
-import 'package:intl/intl.dart';
+
+
 
 class SensorChart extends StatefulWidget {
   final String sensorType; // e.g. "temperature", "humidity"
@@ -27,7 +27,7 @@ class _SensorChartState extends State<SensorChart> {
 
   void _loadData() {
     final ref = FirebaseDatabase.instance.ref(
-      "sensor_reading/${widget.sensorType}",
+      "sensor_logging/${widget.sensorType}",
     );
     ref.onValue.listen((event) {
       final Map<dynamic, dynamic>? values = event.snapshot.value as Map?;
@@ -50,7 +50,7 @@ class _SensorChartState extends State<SensorChart> {
             final val = e.value as Map;
             return SensorData(
               value: (val["value"] as num).toDouble(),
-              timestamp: DateTime.fromMillisecondsSinceEpoch((val["timestamp"] as int) * 1000)
+              timestamp: DateTime.fromMillisecondsSinceEpoch((val["timestamp"] as int) * 1000).add(offset)
             );
           })
           .where((d) => d.timestamp.isAfter(cutoffDate))

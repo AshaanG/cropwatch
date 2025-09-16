@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
+
+
 import 'package:untitled/custom_widgets/actuator_button.dart';
 import 'package:untitled/custom_widgets/weatherbox.dart';
 import 'package:flutter_switch/flutter_switch.dart';
+import 'package:untitled/custom_widgets/threshold_textfield.dart';
 
 class FirstPage extends StatefulWidget {
   const FirstPage({super.key});
@@ -14,6 +15,8 @@ class FirstPage extends StatefulWidget {
 }
 
 class _FirstPageState extends State<FirstPage> {
+  
+
   bool _fanIsPressed = false;
   bool _pumpIsPressed = false;
   bool _heaterIsPressed = false;
@@ -30,11 +33,8 @@ class _FirstPageState extends State<FirstPage> {
   final waterRef = FirebaseDatabase.instance.ref("control/water");
   final heaterRef = FirebaseDatabase.instance.ref("control/heater");
 
-  final modeRef = FirebaseDatabase.instance.ref("control/manual_mode");
-
-  final fantreshRef = FirebaseDatabase.instance.ref("threshold/fan");
-  final watertreshRef = FirebaseDatabase.instance.ref("threshold/fan");
-  final heatertreshRef = FirebaseDatabase.instance.ref("threshold/fan");
+  final modeRef = FirebaseDatabase.instance.ref("mode");
+  
 
   TextEditingController mycontroller = TextEditingController();
 
@@ -165,10 +165,14 @@ class _FirstPageState extends State<FirstPage> {
       final DataSnapshot s = event.snapshot;
       if (!s.exists) return;
 
-      final bool modeState = s.value as bool;
+      final String modeState = s.value.toString(); 
 
       setState(() {
-        isManual = modeState;
+        if (modeState == "manual") {
+          isManual = true;
+        } else if(modeState == "automatic"){
+          isManual = false; // for "automatic" or anything else
+        }
       });
     });
   }
@@ -179,9 +183,87 @@ class _FirstPageState extends State<FirstPage> {
       backgroundColor: Colors.grey[200],
       endDrawer: Drawer(
         child: ListView(
+          padding: EdgeInsets.zero,
           children: [
-            DrawerHeader(child: Text("Settings")),
-            TextField(controller: mycontroller),
+            SizedBox(
+              height: 100,
+              child: DrawerHeader(
+                decoration: BoxDecoration(color: Colors.teal),
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    'Settings',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Align(
+                alignment: Alignment.center,
+                child: Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        "you can change the thresholds in the automatic mode according to your preference using the fields below",
+                      ),
+                    ),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+                    ThresholdTextfield(
+                      label: "Fan",
+                      unit: "⁰C",
+                      end: "max",
+                      mycontroller: TextEditingController(),
+                    ),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                    ThresholdTextfield(
+                      label: "Fan",
+                      unit: "⁰C",
+                      end: "min",
+                      mycontroller: TextEditingController(),
+                    ),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.07),
+                    ThresholdTextfield(
+                      label: "water",
+                      unit: "%",
+                      end: "max",
+                      mycontroller: TextEditingController(),
+                    ),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                    ThresholdTextfield(
+                      label: "water",
+                      unit: "%",
+                      end: "min",
+                      mycontroller: TextEditingController(),
+                    ),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.07),
+                    ThresholdTextfield(
+                      label: "heater",
+                      unit: "⁰C",
+                      end: "max",
+                      mycontroller: mycontroller,
+                    ),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                    ThresholdTextfield(
+                      label: "heater",
+                      unit: "⁰C",
+                      end: "min",
+                      mycontroller: mycontroller,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [Text("Designed and Developed by")],
+            ),
           ],
         ),
       ),
@@ -321,7 +403,7 @@ class _FirstPageState extends State<FirstPage> {
           SizedBox(height: MediaQuery.of(context).size.height * 0.02),
 
           Container(
-            // manual button
+            // ***manual button***
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(45),
               boxShadow: [
@@ -349,7 +431,11 @@ class _FirstPageState extends State<FirstPage> {
               onToggle: (val) {
                 setState(() {
                   isManual = val;
-                  modeRef.set(isManual);
+                  if (isManual) {
+                    modeRef.set("manual");
+                  } else {
+                    modeRef.set("automatic");
+                  }
                 });
               },
             ),
