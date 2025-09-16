@@ -30,7 +30,13 @@ class _FirstPageState extends State<FirstPage> {
   final waterRef = FirebaseDatabase.instance.ref("control/water");
   final heaterRef = FirebaseDatabase.instance.ref("control/heater");
 
-  final modeRef = FirebaseDatabase.instance.ref("manual_mode");
+  final modeRef = FirebaseDatabase.instance.ref("control/manual_mode");
+
+  final fantreshRef = FirebaseDatabase.instance.ref("threshold/fan");
+  final watertreshRef = FirebaseDatabase.instance.ref("threshold/fan");
+  final heatertreshRef = FirebaseDatabase.instance.ref("threshold/fan");
+
+  TextEditingController mycontroller = TextEditingController();
 
   void _toggleButton(String device) {
     setState(() {
@@ -55,9 +61,21 @@ class _FirstPageState extends State<FirstPage> {
     });
   }
 
+  //retrieve
   @override
   void initState() {
     super.initState();
+    final devicesRef = FirebaseDatabase.instance.ref("control");
+    devicesRef.once().then((DatabaseEvent event) {
+      final data = event.snapshot.value as Map;
+      setState(() {
+        _fanIsPressed = data["fan"];
+        _pumpIsPressed = data["water"];
+        _bulbIsPressed = data["light"];
+        _heaterIsPressed = data["heater"];
+        isManual = data["manual_mode"];
+      });
+    });
 
     //temperature listener
     final tempRef = FirebaseDatabase.instance.ref("latest/temperature");
@@ -142,18 +160,48 @@ class _FirstPageState extends State<FirstPage> {
         _bulbIsPressed = bulbState;
       });
     });
+    // manual/automatic listener
+    modeRef.onValue.listen((DatabaseEvent event) {
+      final DataSnapshot s = event.snapshot;
+      if (!s.exists) return;
+
+      final bool modeState = s.value as bool;
+
+      setState(() {
+        isManual = modeState;
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[200],
-      endDrawer: Drawer(),
+      endDrawer: Drawer(
+        child: ListView(
+          children: [
+            DrawerHeader(child: Text("Settings")),
+            TextField(controller: mycontroller),
+          ],
+        ),
+      ),
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        actions: [
+          Builder(
+            builder: (context) => IconButton(
+              icon: Icon(Icons.settings, color: Colors.white, size: 35),
+              onPressed: () {
+                Scaffold.of(context).openEndDrawer();
+              },
+            ),
+          ),
+        ],
+        toolbarHeight: 90,
         title: Text(
           "Cropwatch",
           style: TextStyle(
-            fontSize: 36,
+            fontSize: 40,
             fontWeight: FontWeight.bold,
             color: Colors.white,
           ),
@@ -300,8 +348,8 @@ class _FirstPageState extends State<FirstPage> {
               showOnOff: true,
               onToggle: (val) {
                 setState(() {
+                  isManual = val;
                   modeRef.set(isManual);
-                  isManual = !isManual;
                 });
               },
             ),

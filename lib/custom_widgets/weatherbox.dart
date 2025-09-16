@@ -56,7 +56,8 @@ class WeatherBox extends StatelessWidget {
           ),
           Text(
             "$reading$unit",
-            style: TextStyle(fontSize: 37, color: foreColor),
+            style: TextStyle(fontSize: 37, color: foreColor,fontWeight: FontWeight.bold),
+            
           ),
           Align(
             alignment: Alignment(0.7, 1),
