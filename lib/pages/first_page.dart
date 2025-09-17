@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 
-
 import 'package:untitled/custom_widgets/actuator_button.dart';
 import 'package:untitled/custom_widgets/weatherbox.dart';
 import 'package:flutter_switch/flutter_switch.dart';
@@ -15,8 +14,6 @@ class FirstPage extends StatefulWidget {
 }
 
 class _FirstPageState extends State<FirstPage> {
-  
-
   bool _fanIsPressed = false;
   bool _pumpIsPressed = false;
   bool _heaterIsPressed = false;
@@ -34,7 +31,6 @@ class _FirstPageState extends State<FirstPage> {
   final heaterRef = FirebaseDatabase.instance.ref("control/heater");
 
   final modeRef = FirebaseDatabase.instance.ref("mode");
-  
 
   TextEditingController mycontroller = TextEditingController();
 
@@ -165,13 +161,13 @@ class _FirstPageState extends State<FirstPage> {
       final DataSnapshot s = event.snapshot;
       if (!s.exists) return;
 
-      final String modeState = s.value.toString(); 
+      final String modeState = s.value.toString();
 
       setState(() {
         if (modeState == "manual") {
           isManual = true;
-        } else if(modeState == "automatic"){
-          isManual = false; // for "automatic" or anything else
+        } else if (modeState == "automatic") {
+          isManual = false;
         }
       });
     });
@@ -190,7 +186,7 @@ class _FirstPageState extends State<FirstPage> {
               child: DrawerHeader(
                 decoration: BoxDecoration(color: Colors.teal),
                 child: Align(
-                  alignment: Alignment.centerRight,
+                  alignment: Alignment.centerLeft,
                   child: Text(
                     'Settings',
                     style: TextStyle(
@@ -216,53 +212,48 @@ class _FirstPageState extends State<FirstPage> {
                     ),
                     SizedBox(height: MediaQuery.of(context).size.height * 0.1),
                     ThresholdTextfield(
-                      label: "Fan",
+                      label: "Temperature",
                       unit: "⁰C",
                       end: "max",
                       mycontroller: TextEditingController(),
                     ),
                     SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                     ThresholdTextfield(
-                      label: "Fan",
+                      label: "Temperature",
                       unit: "⁰C",
                       end: "min",
                       mycontroller: TextEditingController(),
                     ),
                     SizedBox(height: MediaQuery.of(context).size.height * 0.07),
                     ThresholdTextfield(
-                      label: "water",
+                      label: "Soil Moisture",
                       unit: "%",
-                      end: "max",
+                      end: " ",
                       mycontroller: TextEditingController(),
                     ),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-                    ThresholdTextfield(
-                      label: "water",
-                      unit: "%",
-                      end: "min",
-                      mycontroller: TextEditingController(),
-                    ),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.07),
-                    ThresholdTextfield(
-                      label: "heater",
-                      unit: "⁰C",
-                      end: "max",
-                      mycontroller: mycontroller,
-                    ),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-                    ThresholdTextfield(
-                      label: "heater",
-                      unit: "⁰C",
-                      end: "min",
-                      mycontroller: mycontroller,
-                    ),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.33),
                   ],
                 ),
               ),
             ),
             Column(
               mainAxisAlignment: MainAxisAlignment.end,
-              children: [Text("Designed and Developed by")],
+              children: [
+                Text(
+                  "Designed and Developed by",
+                  style: TextStyle(
+                    color: Colors.black.withAlpha(170),
+                    fontSize: MediaQuery.of(context).size.height * 0.008,
+                  ),
+                ),
+                Text(
+                  "Ashaan Gunatilake",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black.withAlpha(180),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
@@ -294,91 +285,72 @@ class _FirstPageState extends State<FirstPage> {
         children: [
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.365,
-            child: Stack(
-              children: [
-                Container(
-                  padding: EdgeInsets.only(bottom: 30, left: 10, right: 11),
+            child: Container(
+              padding: EdgeInsets.only(bottom: 25, left: 10, right: 11),
 
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.shade500,
-                        offset: Offset(0, 3),
-                        blurRadius: 3,
-                        spreadRadius: 0,
-                      ),
-                    ],
-                    color: const Color.fromARGB(255, 0, 123, 127),
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(39),
-                      bottomRight: Radius.circular(39),
-                    ),
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.shade500,
+                    offset: Offset(0, 3),
+                    blurRadius: 3,
+                    spreadRadius: 0,
                   ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        height: MediaQuery.of(context).size.height * 0.33,
-                        padding: EdgeInsets.all(22),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(25),
-                          color: const Color.fromARGB(255, 0, 98, 101),
-                        ),
-                        child: Column(
+                ],
+                color: const Color.fromARGB(255, 0, 123, 127),
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(39),
+                  bottomRight: Radius.circular(39),
+                ),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    height: MediaQuery.of(context).size.height * 0.33,
+                    padding: EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(25),
+                      color: const Color.fromARGB(255, 0, 98, 101),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                WeatherBox(
-                                  label: "Temperature",
-                                  backColor: const Color.fromARGB(
-                                    255,
-                                    0,
-                                    123,
-                                    127,
-                                  ),
-                                  foreColor: Colors.white,
-                                  reading: temperature,
-                                  unit: '⁰C',
-                                ),
-                                WeatherBox(
-                                  label: "Humidity",
-                                  backColor: Colors.white,
-                                  foreColor: const Color.fromARGB(
-                                    255,
-                                    0,
-                                    123,
-                                    127,
-                                  ),
-                                  reading: humidity,
-                                  unit: "%",
-                                ),
-                              ],
+                            WeatherBox(
+                              label: "Temperature",
+                              backColor: const Color.fromARGB(255, 0, 123, 127),
+                              foreColor: Colors.white,
+                              reading: temperature,
+                              unit: '⁰C',
                             ),
-                            Align(
-                              alignment: Alignment(-1, 1),
-                              child: WeatherBox(
-                                label: "Soil Moisture",
-                                backColor: const Color.fromARGB(
-                                  255,
-                                  0,
-                                  123,
-                                  127,
-                                ),
-                                foreColor: Colors.white,
-                                reading: soilMoisture,
-                                unit: "%",
-                              ),
+                            WeatherBox(
+                              label: "Humidity",
+                              backColor: Colors.white,
+                              foreColor: const Color.fromARGB(255, 0, 123, 127),
+                              reading: humidity,
+                              unit: "%",
                             ),
                           ],
                         ),
-                      ),
-                    ],
+                        Align(
+                          alignment: Alignment(-1, 1),
+                          child: WeatherBox(
+                            label: "Soil Moisture",
+                            backColor: const Color.fromARGB(255, 0, 123, 127),
+                            foreColor: Colors.white,
+                            reading: soilMoisture,
+                            unit: "%",
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           SizedBox(height: MediaQuery.of(context).size.height * 0.02),
@@ -440,7 +412,7 @@ class _FirstPageState extends State<FirstPage> {
               },
             ),
           ),
-          SizedBox(height: MediaQuery.of(context).size.height * 0.015),
+          SizedBox(height: MediaQuery.of(context).size.height * 0.01),
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.047,
             child: Text(
@@ -448,7 +420,7 @@ class _FirstPageState extends State<FirstPage> {
             ),
           ),
           SizedBox(
-            height: MediaQuery.of(context).size.height * 0.3,
+            height: MediaQuery.of(context).size.height * 0.287,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [

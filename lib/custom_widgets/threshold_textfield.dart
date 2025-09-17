@@ -12,47 +12,70 @@ class ThresholdTextfield extends StatefulWidget {
     required this.label,
     required this.unit,
     required this.end,
-    required this.mycontroller
+    required this.mycontroller,
   });
 
   @override
-  State<ThresholdTextfield> createState() => _MyWidgetState();
+  State<ThresholdTextfield> createState() => _ThresholdTextfieldState();
 }
 
+class _ThresholdTextfieldState extends State<ThresholdTextfield> {
+  num? current;
 
+  @override
+  void initState() {
+    super.initState();
+    _loadCurrentValue();
+  }
 
-class _MyWidgetState extends State<ThresholdTextfield> {
+  void _loadCurrentValue() async {
+    final ref = FirebaseDatabase.instance.ref(
+      "threshold/${widget.label}/${widget.end}",
+    );
+    final snapshot = await ref.get();
+    if (snapshot.exists) {
+      setState(() {
+        current = (snapshot.value as num);
+      });
+    }
+  }
+
+  
   @override
   Widget build(BuildContext context) {
     final String label = widget.label;
     final String unit = widget.unit;
     final String end = widget.end;
-    num current = 0;
+
     return Row(
       children: [
         Text("$label $end: "),
-
         Expanded(
           child: TextField(
             controller: widget.mycontroller,
             decoration: InputDecoration(
               border: OutlineInputBorder(),
-              hintText: "$current$unit",
+              // show placeholder only after loading
+              hintText: current == null ? "..." : "$current$unit",hintStyle: TextStyle(color: Colors.black.withAlpha(130)),
             ),
             keyboardType: TextInputType.number,
           ),
         ),
-        SizedBox(width: 8),
+        const SizedBox(width: 8),
         ElevatedButton(
           onPressed: () {
             final value = num.tryParse(widget.mycontroller.text);
             if (value != null) {
-              current = value;
-              FirebaseDatabase.instance.ref("threshold/$label/$end").set(value);
+              FirebaseDatabase.instance
+                  .ref("threshold/$label/$end")
+                  .set(value);
+              setState(() {
+                current = value; // update local state
+              });
               widget.mycontroller.clear();
             }
           },
-          child: Text("Save"),
+          child: const Text("Save"),
         ),
       ],
     );
