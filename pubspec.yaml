@@ -76,8 +76,9 @@ flutter:
       - assets/images/heater.png
       - assets/images/water.png
       - assets/images/bulb.png
-      - assets/images/leaf.png
       - assets/images/logo.png
+      - assets/images/leaf.png
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

@@ -42,28 +42,32 @@ class WeatherBox extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         color: backColor,
       ),
-      padding: EdgeInsets.only(top: 12, left: 20, bottom: 12, right: 10),
+      padding: EdgeInsets.only(top: 8, left: 20, bottom: 12, right: 10),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             label,
             style: TextStyle(
               color: foreColor,
-              fontSize: 17.5,
+              fontSize: MediaQuery.of(context).size.height * 0.022,
               fontWeight: FontWeight.bold,
             ),
           ),
           Text(
             "$reading$unit",
-            style: TextStyle(fontSize: 37, color: foreColor,fontWeight: FontWeight.bold),
-            
+            style: TextStyle(
+              fontSize: MediaQuery.of(context).size.height * 0.037,
+              color: foreColor,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           Align(
-            alignment: Alignment(0.7, 1),
+            alignment: Alignment(0.7,1),
             child: Text(
               getStatus(),
-              style: TextStyle(fontSize: 15, color: foreColor),
+              style: TextStyle(fontSize: MediaQuery.of(context).size.height * 0.017, color: foreColor),
             ),
           ),
         ],
