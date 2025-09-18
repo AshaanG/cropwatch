@@ -49,7 +49,7 @@ class _ThresholdTextfieldState extends State<ThresholdTextfield> {
 
     return Row(
       children: [
-        Text("$label $end: "),
+        Text("$label $end: ",style: TextStyle(fontSize: MediaQuery.of(context).size.height * 0.017,fontWeight: FontWeight.bold),),
         Expanded(
           child: TextField(
             controller: widget.mycontroller,

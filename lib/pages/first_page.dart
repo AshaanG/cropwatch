@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
-
 import 'package:untitled/custom_widgets/actuator_button.dart';
 import 'package:untitled/custom_widgets/weatherbox.dart';
 import 'package:flutter_switch/flutter_switch.dart';
@@ -178,6 +177,7 @@ class _FirstPageState extends State<FirstPage> {
     return Scaffold(
       backgroundColor: Colors.grey[200],
       endDrawer: Drawer(
+        //**************************************** drawer ************************************
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
@@ -211,6 +211,12 @@ class _FirstPageState extends State<FirstPage> {
                       ),
                     ),
                     SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+                    Text(
+                      "The fan will remain on as long as the temperature is above this value",
+                      style: TextStyle(
+                        fontSize: MediaQuery.of(context).size.height * 0.013,
+                      ),
+                    ),
                     ThresholdTextfield(
                       label: "Temperature",
                       unit: "⁰C",
@@ -218,6 +224,12 @@ class _FirstPageState extends State<FirstPage> {
                       mycontroller: TextEditingController(),
                     ),
                     SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                    Text(
+                      "The fan will remain on as long as the temperature is below this value",
+                      style: TextStyle(
+                        fontSize: MediaQuery.of(context).size.height * 0.013,
+                      ),
+                    ),
                     ThresholdTextfield(
                       label: "Temperature",
                       unit: "⁰C",
@@ -225,13 +237,19 @@ class _FirstPageState extends State<FirstPage> {
                       mycontroller: TextEditingController(),
                     ),
                     SizedBox(height: MediaQuery.of(context).size.height * 0.07),
+                    Text(
+                      "The water pump will remain on as long as the Soil Moisture is below this value",
+                      style: TextStyle(
+                        fontSize: MediaQuery.of(context).size.height * 0.013,
+                      ),
+                    ),
                     ThresholdTextfield(
                       label: "Soil Moisture",
                       unit: "%",
                       end: " ",
                       mycontroller: TextEditingController(),
                     ),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.33),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.23),
                   ],
                 ),
               ),
@@ -243,7 +261,7 @@ class _FirstPageState extends State<FirstPage> {
                   "Designed and Developed by",
                   style: TextStyle(
                     color: Colors.black.withAlpha(170),
-                    fontSize: MediaQuery.of(context).size.height * 0.008,
+                    fontSize: MediaQuery.of(context).size.height * 0.01,
                   ),
                 ),
                 Text(
@@ -251,6 +269,7 @@ class _FirstPageState extends State<FirstPage> {
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.black.withAlpha(180),
+                    fontSize: MediaQuery.of(context).size.height * 0.011,
                   ),
                 ),
               ],
@@ -281,204 +300,230 @@ class _FirstPageState extends State<FirstPage> {
         ),
         backgroundColor: const Color.fromARGB(255, 0, 123, 127),
       ),
-      body: Column(
-        children: [
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.365,
-            child: Container(
-              padding: EdgeInsets.only(bottom: 25, left: 10, right: 11),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.365,
+              child: Container(
+                padding: EdgeInsets.only(bottom: 25, left: 10, right: 11),
 
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.shade500,
+                      offset: Offset(0, 3),
+                      blurRadius: 3,
+                      spreadRadius: 0,
+                    ),
+                  ],
+                  color: const Color.fromARGB(255, 0, 123, 127),
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(39),
+                    bottomRight: Radius.circular(39),
+                  ),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.33,
+                      padding: EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(25),
+                        color: const Color.fromARGB(255, 0, 98, 101),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              WeatherBox(
+                                label: "Temperature",
+                                backColor: const Color.fromARGB(
+                                  255,
+                                  0,
+                                  123,
+                                  127,
+                                ),
+                                foreColor: Colors.white,
+                                reading: temperature,
+                                unit: '⁰C',
+                              ),
+                              WeatherBox(
+                                label: "Humidity",
+                                backColor: Colors.white,
+                                foreColor: const Color.fromARGB(
+                                  255,
+                                  0,
+                                  123,
+                                  127,
+                                ),
+                                reading: humidity,
+                                unit: "%",
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              WeatherBox(
+                                label: "Soil Moisture",
+                                backColor: const Color.fromARGB(
+                                  255,
+                                  0,
+                                  123,
+                                  127,
+                                ),
+                                foreColor: Colors.white,
+                                reading: soilMoisture,
+                                unit: "%",
+                              ),
+                              SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.135,
+                                width: MediaQuery.of(context).size.width * 0.4,
+                                child: Image.asset('assets/images/leaf.png'),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.04,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.grey[200],
+                ),
+                child: Text(
+                  "View Trends",
+                  style: TextStyle(
+                    color: const Color.fromARGB(255, 0, 98, 101),
+                    fontSize: 16,
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/secondpage');
+                },
+              ),
+            ),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+
+            Container(
+              // ***manual button***
               decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(45),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.grey.shade500,
                     offset: Offset(0, 3),
-                    blurRadius: 3,
+                    blurRadius: 2,
                     spreadRadius: 0,
                   ),
                 ],
-                color: const Color.fromARGB(255, 0, 123, 127),
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(39),
-                  bottomRight: Radius.circular(39),
-                ),
               ),
+              height: MediaQuery.of(context).size.height * 0.04,
+              width:
+                  MediaQuery.of(context).size.width * (isManual ? 0.27 : 0.34),
+              child: FlutterSwitch(
+                value: isManual,
+                width: isManual ? 116 : 135,
+                height: 50,
+                toggleSize: 50,
+                borderRadius: 25,
+                activeColor: const Color.fromARGB(255, 0, 123, 127),
+                inactiveColor: const Color.fromARGB(255, 0, 123, 127),
+                activeText: "Manual",
+                inactiveText: "Automatic",
+                showOnOff: true,
+                onToggle: (val) {
+                  setState(() {
+                    isManual = val;
+                    if (isManual) {
+                      modeRef.set("manual");
+                    } else {
+                      modeRef.set("automatic");
+                    }
+                  });
+                },
+              ),
+            ),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.047,
+              child: Text(
+                isManual ? "" : "Turn On Manual Mode to control devices",
+              ),
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.287,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Container(
-                    height: MediaQuery.of(context).size.height * 0.33,
-                    padding: EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(25),
-                      color: const Color.fromARGB(255, 0, 98, 101),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            WeatherBox(
-                              label: "Temperature",
-                              backColor: const Color.fromARGB(255, 0, 123, 127),
-                              foreColor: Colors.white,
-                              reading: temperature,
-                              unit: '⁰C',
-                            ),
-                            WeatherBox(
-                              label: "Humidity",
-                              backColor: Colors.white,
-                              foreColor: const Color.fromARGB(255, 0, 123, 127),
-                              reading: humidity,
-                              unit: "%",
-                            ),
-                          ],
-                        ),
-                        Align(
-                          alignment: Alignment(-1, 1),
-                          child: WeatherBox(
-                            label: "Soil Moisture",
-                            backColor: const Color.fromARGB(255, 0, 123, 127),
-                            foreColor: Colors.white,
-                            reading: soilMoisture,
-                            unit: "%",
-                          ),
-                        ),
-                      ],
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ActuatorButton(
+                        isManual: isManual,
+                        label: "Fan",
+                        assetpath: 'assets/images/fan.png',
+                        isPressed: _fanIsPressed,
+
+                        onToggle: () => _toggleButton("fan"),
+                        color: const Color.fromARGB(255, 66, 227, 128),
+                      ),
+
+                      ActuatorButton(
+                        isManual: isManual,
+                        label: "Water",
+                        assetpath: 'assets/images/water.png',
+                        isPressed: _pumpIsPressed,
+
+                        onToggle: () => _toggleButton("water"),
+                        color: const Color.fromARGB(255, 0, 162, 255),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.0005),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ActuatorButton(
+                        isManual: isManual,
+                        label: "Heater",
+                        assetpath: 'assets/images/heater.png',
+                        isPressed: _heaterIsPressed,
+
+                        onToggle: () => _toggleButton("heater"),
+                        color: Colors.red,
+                      ),
+
+                      ActuatorButton(
+                        isManual: isManual,
+                        label: "LED",
+                        assetpath: 'assets/images/bulb.png',
+                        isPressed: _bulbIsPressed,
+
+                        onToggle: () => _toggleButton("led"),
+                        color: const Color.fromARGB(255, 255, 219, 17),
+                      ),
+                    ],
                   ),
                 ],
               ),
             ),
-          ),
-          SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.04,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.grey[200],
-              ),
-              child: Text(
-                "View Trends",
-                style: TextStyle(
-                  color: const Color.fromARGB(255, 0, 98, 101),
-                  fontSize: 16,
-                ),
-              ),
-              onPressed: () {
-                Navigator.pushNamed(context, '/secondpage');
-              },
-            ),
-          ),
-          SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-
-          Container(
-            // ***manual button***
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(45),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.shade500,
-                  offset: Offset(0, 3),
-                  blurRadius: 2,
-                  spreadRadius: 0,
-                ),
-              ],
-            ),
-            height: MediaQuery.of(context).size.height * 0.04,
-            width: MediaQuery.of(context).size.width * (isManual ? 0.27 : 0.34),
-            child: FlutterSwitch(
-              value: isManual,
-              width: isManual ? 116 : 135,
-              height: 50,
-              toggleSize: 50,
-              borderRadius: 25,
-              activeColor: const Color.fromARGB(255, 0, 123, 127),
-              inactiveColor: const Color.fromARGB(255, 0, 123, 127),
-              activeText: "Manual",
-              inactiveText: "Automatic",
-              showOnOff: true,
-              onToggle: (val) {
-                setState(() {
-                  isManual = val;
-                  if (isManual) {
-                    modeRef.set("manual");
-                  } else {
-                    modeRef.set("automatic");
-                  }
-                });
-              },
-            ),
-          ),
-          SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.047,
-            child: Text(
-              isManual ? "" : "Turn On Manual Mode to control devices",
-            ),
-          ),
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.287,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    ActuatorButton(
-                      isManual: isManual,
-                      label: "Fan",
-                      assetpath: 'assets/images/fan.png',
-                      isPressed: _fanIsPressed,
-
-                      onToggle: () => _toggleButton("fan"),
-                      color: const Color.fromARGB(255, 66, 227, 128),
-                    ),
-
-                    ActuatorButton(
-                      isManual: isManual,
-                      label: "Water",
-                      assetpath: 'assets/images/water.png',
-                      isPressed: _pumpIsPressed,
-
-                      onToggle: () => _toggleButton("water"),
-                      color: const Color.fromARGB(255, 0, 162, 255),
-                    ),
-                  ],
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.0005),
-
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    ActuatorButton(
-                      isManual: isManual,
-                      label: "Heater",
-                      assetpath: 'assets/images/heater.png',
-                      isPressed: _heaterIsPressed,
-
-                      onToggle: () => _toggleButton("heater"),
-                      color: Colors.red,
-                    ),
-
-                    ActuatorButton(
-                      isManual: isManual,
-                      label: "LED",
-                      assetpath: 'assets/images/bulb.png',
-                      isPressed: _bulbIsPressed,
-
-                      onToggle: () => _toggleButton("led"),
-                      color: const Color.fromARGB(255, 255, 219, 17),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-        ],
+            SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+          ],
+        ),
       ),
     );
   }

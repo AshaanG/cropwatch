@@ -64,10 +64,10 @@ class WeatherBox extends StatelessWidget {
             ),
           ),
           Align(
-            alignment: Alignment.bottomRight,
+            alignment: Alignment(0.7,1),
             child: Text(
               getStatus(),
-              style: TextStyle(fontSize: MediaQuery.of(context).size.height * 0.015, color: foreColor),
+              style: TextStyle(fontSize: MediaQuery.of(context).size.height * 0.017, color: foreColor),
             ),
           ),
         ],
