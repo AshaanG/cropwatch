@@ -73,7 +73,7 @@ class _FirstPageState extends State<FirstPage> {
     });
 
     //temperature listener
-    final tempRef = FirebaseDatabase.instance.ref("latest/temperature");
+    final tempRef = FirebaseDatabase.instance.ref("sensor/temp");
     tempRef.onValue.listen((DatabaseEvent event) {
       final DataSnapshot s = event.snapshot;
       if (!s.exists) return;
@@ -85,7 +85,7 @@ class _FirstPageState extends State<FirstPage> {
     });
 
     //humidity listener
-    final humidityRef = FirebaseDatabase.instance.ref("latest/humidity");
+    final humidityRef = FirebaseDatabase.instance.ref("sensor/humi");
     humidityRef.onValue.listen((DatabaseEvent event) {
       final DataSnapshot s = event.snapshot;
       if (!s.exists) return;
