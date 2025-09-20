@@ -1,5 +1,11 @@
 # 🌱 Cropwatch
 
+![Flutter](https://img.shields.io/badge/Flutter-02569B?logo=flutter&logoColor=white&style=for-the-badge)
+![Dart](https://img.shields.io/badge/Dart-0175C2?logo=dart&logoColor=white&style=for-the-badge)
+![Firebase](https://img.shields.io/badge/Firebase-FFCA28?logo=firebase&logoColor=black&style=for-the-badge)
+![Arduino](https://img.shields.io/badge/Arduino-00979D?logo=arduino&logoColor=white&style=for-the-badge)
+
+
 *A smart greenhouse system using ESP32, Firebase, Flutter, and JavaScript.*
 
 ---
@@ -81,8 +87,8 @@ Greenhouse conditions must be constantly monitored and adjusted.
 
 ### 2. Clone the Repo
 ```bash
-git clone https://github.com/<your-username>/cropwatch-mobile.git
-cd cropwatch-mobile.
+git clone https://github.com/AshaanG/Cropwatch-mobile-app.git
+cd Cropwatch-mobile-app.
 ```
 
 ---
@@ -122,8 +128,8 @@ cd cropwatch-mobile.
 # 👥 Contributors
 
 - **Mobile App:** Ashaan Gunatilake 
-- **Web App:** Aakil Ahmed  
-- **Arduino/ESP32:** Ashaan Gunatilake, Aakil Ahmed, Senithu Liyanage  
+- **Web App:** Aakil Ahamed  
+- **Arduino/ESP32:** Ashaan Gunatilake, Aakil Ahamed, Senithu Liyanage  
 
 ---
 
